@@ -1,13 +1,25 @@
 package com.bbarb75.udemyreporting;
 
+import com.bbarb75.udemyreporting.API.ApiClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UdemyreportingApplication {
+public class UdemyreportingApplication implements CommandLineRunner {
+
+	@Autowired
+	private ApiClient apiClient;
 
 	public static void main(String[] args) {
 		SpringApplication.run(UdemyreportingApplication.class, args);
+
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		apiClient.fetchDataFromApi();
 	}
 
 }
