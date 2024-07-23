@@ -23,7 +23,7 @@ public class EmployeeService {
         List<Employee> employees = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            JsonNode responseNode = mapper.readTree(jsonResponse).get("response");
+            JsonNode responseNode = mapper.readTree(jsonResponse).get("results");
 
             if (responseNode !=null){
                 for (JsonNode employeeNode : responseNode){
@@ -40,10 +40,18 @@ public class EmployeeService {
 
                     employees.add(employee);
 
+                    System.out.println(employees);
+
                 }
             }
+            System.out.println(employees.toString());
         } catch (Exception e) {
             e.printStackTrace();
         } return employees;
     }
+
+   /* public void testApiResponse(String jsonResponse){
+        System.out.println(parseApiResponse(jsonResponse));
+
+    }*/
 }
