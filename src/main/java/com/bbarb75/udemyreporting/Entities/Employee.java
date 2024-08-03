@@ -30,7 +30,11 @@ public class Employee {
     }
 
 
-
-
-
+    @Override
+    public String toString() { //overridden toString method to test print the ArrayLists to verify data
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", lastActivity='" + lastActivity + '\'' +
+                '}';
+    }
 }

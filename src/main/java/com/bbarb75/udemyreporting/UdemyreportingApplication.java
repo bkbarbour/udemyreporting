@@ -22,8 +22,8 @@ public class UdemyreportingApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		apiClient.fetchDataFromApi();
-		employeeService.parseApiResponse(apiClient.fetchDataFromApi());
+		/*apiClient.fetchDataFromApi();
+		employeeService.parseApiResponse(apiClient.fetchDataFromApi());*/
 	}
 
 }

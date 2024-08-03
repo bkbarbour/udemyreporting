@@ -19,15 +19,16 @@ public class ApiClient {
 
     @Value("${udemy.api.accountid}")
     private String accountID;
-    private String testApiUrl = "https://comtechnc.udemy.com/api-2.0/organizations/302706/analytics/user-course-activity/";
+    //private String testApiUrl = "https://comtechnc.udemy.com/api-2.0/organizations/302706/analytics/user-course-activity/";
+    public String apiUrl = "https://comtechnc.udemy.com/api-2.0/organizations/302706/analytics/user-course-activity/";
 
-    public String fetchDataFromApi() {
+    public String fetchDataFromApi(String apiUrl) {
         try {
             String auth = clientID + ":" + clientSecret;
             String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes()); //handles base64 encoding for basic auth
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(testApiUrl))
+                    .uri(URI.create(apiUrl))
                     .header("Authorization", "Basic " + encodedAuth)
                     .GET()
                     .build();

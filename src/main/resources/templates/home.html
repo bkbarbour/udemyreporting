@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+  <h1 class="page-header">Employee Udemy Data</h1>
+  <hr>
+  <div class="table-container">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Date Last Accessed</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="employee : ${employees} ">
+        <td th:text="${employee.name}">1</td>
+        <td th:text="${employee.lastActivity}">1</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
