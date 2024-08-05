@@ -4,9 +4,14 @@ public class Employee {
     String name;
     String lastActivity;
 
+
+
+    String courseName;
+
     public Employee(String name, String lastActivity) {
         this.name = name;
         this.lastActivity = lastActivity;
+        this.courseName = courseName;
     }
 
     public Employee(){
@@ -28,7 +33,13 @@ public class Employee {
     public void setLastActivity(String lastActivity) {
         this.lastActivity = lastActivity;
     }
+    public String getCourseName() {
+        return courseName;
+    }
 
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
     @Override
     public String toString() { //overridden toString method to test print the ArrayLists to verify data

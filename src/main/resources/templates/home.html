@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
 </head>
 <body>
   <h1 class="page-header">Employee Udemy Data</h1>
@@ -14,12 +15,14 @@
       <tr>
         <th>Name</th>
         <th>Date Last Accessed</th>
+        <th>Course Title</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="employee : ${employees} ">
         <td th:text="${employee.name}">1</td>
         <td th:text="${employee.lastActivity}">1</td>
+        <td th:text="${employee.courseName}">1</td>
       </tr>
       </tbody>
     </table>

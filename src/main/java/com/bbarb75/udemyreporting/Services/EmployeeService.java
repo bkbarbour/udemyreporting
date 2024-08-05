@@ -31,14 +31,22 @@ public class EmployeeService {
                 for (JsonNode employeeNode : responseNode){
                     JsonNode employeeFirstNameNode = employeeNode.get("user_name");
                     JsonNode employeeLastNameNode = employeeNode.get("user_surname");
+                    JsonNode employeeCourseNameNode = employeeNode.get("course_title");
                     JsonNode employeeCourseAccessedNode = employeeNode.get("course_last_accessed_date");
 
-                    String name = employeeFirstNameNode.toString() + " " + employeeLastNameNode.toString();
+                    String firstName = employeeFirstNameNode.asText();
+                    String firstNameFinal = firstName.replaceAll("\"", "");
+                    String lastName = employeeLastNameNode.asText();
+                    String lastNameFinal = lastName.replaceAll("\"", "");
+
+                    String name = firstNameFinal + " " + lastNameFinal;
                     String courseLastAccessed = employeeCourseAccessedNode.toString();
+                    String courseName = employeeCourseNameNode.toString();
 
                     Employee employee = new Employee();
                     employee.setName(name);
                     employee.setLastActivity(courseLastAccessed);
+                    employee.setCourseName(courseName);
                     //System.out.println(employee.toString());
 
                     employees.add(employee);
