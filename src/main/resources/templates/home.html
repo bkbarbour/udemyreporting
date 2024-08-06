@@ -16,6 +16,7 @@
         <th>Name</th>
         <th>Date Last Accessed</th>
         <th>Course Title</th>
+        <th>Minutes Spent In Course (Videos Only)</th>
       </tr>
       </thead>
       <tbody>
@@ -23,6 +24,7 @@
         <td th:text="${employee.name}">1</td>
         <td th:text="${employee.lastActivity}">1</td>
         <td th:text="${employee.courseName}">1</td>
+        <td th:text="${employee.minutesSpent}">1</td>
       </tr>
       </tbody>
     </table>

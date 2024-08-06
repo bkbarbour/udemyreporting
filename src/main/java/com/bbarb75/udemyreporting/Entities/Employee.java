@@ -3,15 +3,23 @@ package com.bbarb75.udemyreporting.Entities;
 public class Employee {
     String name;
     String lastActivity;
-
-
-
     String courseName;
 
-    public Employee(String name, String lastActivity) {
+    public String getMinutesSpent() {
+        return minutesSpent;
+    }
+
+    public void setMinutesSpent(String minutesSpent) {
+        this.minutesSpent = minutesSpent;
+    }
+
+    String minutesSpent;
+
+    public Employee(String name, String lastActivity, String courseName, String minutesSpent) {
         this.name = name;
         this.lastActivity = lastActivity;
         this.courseName = courseName;
+        this.minutesSpent = minutesSpent;
     }
 
     public Employee(){

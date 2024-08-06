@@ -5,8 +5,11 @@ import com.bbarb75.udemyreporting.Entities.Employee;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,25 +32,42 @@ public class EmployeeService {
 
             if (responseNode !=null){
                 for (JsonNode employeeNode : responseNode){
+                    Employee employee = new Employee();
                     JsonNode employeeFirstNameNode = employeeNode.get("user_name");
                     JsonNode employeeLastNameNode = employeeNode.get("user_surname");
                     JsonNode employeeCourseNameNode = employeeNode.get("course_title");
                     JsonNode employeeCourseAccessedNode = employeeNode.get("course_last_accessed_date");
+                    JsonNode employeeMinutesSpent = employeeNode.get("num_video_consumed_minutes");
+
+                    if (!employeeCourseAccessedNode.isMissingNode() && !employeeCourseAccessedNode.isNull()){
+                        String courseLastAccessed = employeeCourseAccessedNode.asText();
+
+                        DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+                        Instant instant = Instant.parse(courseLastAccessed);
+                        LocalDateTime courseAccessedDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                        DateTimeFormatter readableFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+                        String courseLastAccessedDateFormatted = courseAccessedDateTime.format(readableFormatter);
+                        employee.setLastActivity(courseLastAccessedDateFormatted);
+                    } else {
+                        employee.setLastActivity(null);
+                    }
 
                     String firstName = employeeFirstNameNode.asText();
                     String firstNameFinal = firstName.replaceAll("\"", "");
                     String lastName = employeeLastNameNode.asText();
                     String lastNameFinal = lastName.replaceAll("\"", "");
+                    String minutesSpent = employeeMinutesSpent.asText();
 
                     String name = firstNameFinal + " " + lastNameFinal;
-                    String courseLastAccessed = employeeCourseAccessedNode.toString();
+
                     String courseName = employeeCourseNameNode.toString();
 
-                    Employee employee = new Employee();
+
                     employee.setName(name);
-                    employee.setLastActivity(courseLastAccessed);
+                    //employee.setLastActivity(courseAccessedDateTime);
                     employee.setCourseName(courseName);
                     //System.out.println(employee.toString());
+                    employee.setMinutesSpent(minutesSpent);
 
                     employees.add(employee);
 
