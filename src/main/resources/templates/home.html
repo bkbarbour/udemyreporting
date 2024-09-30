@@ -9,6 +9,13 @@
 <body>
   <h1 class="page-header">Employee Udemy Data</h1>
   <hr>
+  <label class="choose-employee" for="employeeName">Choose an employee:</label>
+  <form class = "employeeNameForm" id="employeeNameForm" action="/home" method="get">
+    <select name="employeeName" id="employeeName">
+      <option hidden disabled th:selected="${employeeName == select}" value="select">--Select an employee</option>
+      <option th:selected = "${employeeName == 'Keith Barbour'}" value="Keith Barbour">Keith Barbour<</option>
+    </select>
+  </form>
   <div class="table-container">
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
