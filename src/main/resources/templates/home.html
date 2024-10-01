@@ -13,7 +13,7 @@
   <form class = "employeeNameForm" id="employeeNameForm" action="/home" method="get">
     <select name="employeeName" id="employeeName">
       <option hidden disabled th:selected="${employeeName == select}" value="select">--Select an employee</option>
-      <option th:selected = "${employeeName == 'Keith Barbour'}" value="Keith Barbour">Keith Barbour<</option>
+      <option th:each = "name : ${uniqueEmployeeNames}" th:value="${name}" th:text="${name}" th:selected="${employeeName == name}"></option>
     </select>
   </form>
   <div class="table-container">

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -19,8 +20,13 @@ public class MainController {
     public String getEmployee(@RequestParam(value = "employeeName", defaultValue = "select")String employeeName, Model model) {
         //String jsonResponse = employeeService.fetchEmployeeData();
         List<Employee> employees = employeeService.fetchAllEmployees(); //this is the issue - all data is being added but this is grabbing it before
+        List<String> uniqueEmployeeNames = employees.stream()
+                        .map(Employee::getName)
+                        .distinct()
+                        .collect(Collectors.toList());
         model.addAttribute("employees", employees);
         model.addAttribute("employeeName", employeeName);
+        model.addAttribute("uniqueEmployeeNames", uniqueEmployeeNames);
         return "home";
     }
 }
