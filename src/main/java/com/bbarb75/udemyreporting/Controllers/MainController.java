@@ -20,10 +20,17 @@ public class MainController {
     public String getEmployee(@RequestParam(value = "employeeName", defaultValue = "select")String employeeName, Model model) {
         //String jsonResponse = employeeService.fetchEmployeeData();
         List<Employee> employees = employeeService.fetchAllEmployees(); //this is the issue - all data is being added but this is grabbing it before
+
         List<String> uniqueEmployeeNames = employees.stream()
                         .map(Employee::getName)
                         .distinct()
                         .collect(Collectors.toList());
+
+        if(!employeeName.equals("select")) {
+            employees = employees.stream()
+                    .filter(employee -> employee.getName().equals(employeeName))
+                    .collect(Collectors.toList());
+        }
         model.addAttribute("employees", employees);
         model.addAttribute("employeeName", employeeName);
         model.addAttribute("uniqueEmployeeNames", uniqueEmployeeNames);
