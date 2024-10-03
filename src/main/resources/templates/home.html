@@ -2,41 +2,93 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <link th:href="@{/css/main.css}" rel="stylesheet"/>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 </head>
+
 <body>
-  <h1 class="page-header">Employee Udemy Data</h1>
-  <hr>
-  <label class="choose-employee" for="employeeName">Choose an employee:</label>
-  <form class = "employeeNameForm" id="employeeNameForm" action="/home" method="get">
-    <select name="employeeName" id="employeeName">
-      <option hidden disabled th:selected="${employeeName == select}" value="select">--Select an employee</option>
-      <option th:each = "name : ${uniqueEmployeeNames}" th:value="${name}" th:text="${name}" th:selected="${employeeName == name}"></option>
-    </select>
-    <button type="submit">Filter</button>
-  </form>
-  <div class="table-container">
-    <table class="table table-bordered table-striped">
-      <thead class="thead-dark">
-      <tr>
-        <th>Name</th>
-        <th>Date Last Accessed</th>
-        <th>Course Title</th>
-        <th>Minutes Spent In Course (Videos Only)</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="employee : ${employees} ">
-        <td th:text="${employee.name}">1</td>
-        <td th:text="${employee.lastActivity}">1</td>
-        <td th:text="${employee.courseName}">1</td>
-        <td th:text="${employee.minutesSpent}">1</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+<h1 class="page-header">Employee Udemy Data</h1>
+<hr>
+<label class="choose-employee" for="employeeName">Choose an employee:</label>
+
+<form class="employeeNameForm" id="employeeNameForm" method="GET">
+  <select name="employeeName" id="employeeName">
+    <option hidden disabled th:selected="${employeeName == 'select'}" value="select">--Select an employee--</option>
+    <option th:each="name : ${uniqueEmployeeNames}" th:value="${name}" th:text="${name}" th:selected="${employeeName == name}"></option>
+  </select>
+  <button type="submit" id="filterButton">Filter</button>
+</form>
+
+<div class="table-container">
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>Name</th>
+      <th>Date Last Accessed</th>
+      <th>Course Title</th>
+      <th>Minutes Spent In Course (Videos Only)</th>
+    </tr>
+    </thead>
+    <tbody id="employeeTableBody">
+    <tr th:each="employee : ${employees}">
+      <td th:text="${employee.name}">1</td>
+      <td th:text="${employee.lastActivity}">1</td>
+      <td th:text="${employee.courseName}">1</td>
+      <td th:text="${employee.minutesSpent}">1</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  // This initializes the employeesData variable with the employee data from the server
+  window.employeesData = [[${employees}]]; // Ensure this outputs valid JSON
+  console.log("Employees Data:", window.employeesData); //Log the data
+
+  $(document).ready(function () {
+    $('#employeeNameForm').on('submit', function (e) {
+      e.preventDefault();  // Prevent the form from submitting in the traditional way
+
+      var selectedEmployee = $('#employeeName').val();
+      console.log("Selected Employee: " + selectedEmployee);  // Debugging
+
+      // Clear the table body
+      $('#employeeTableBody').empty();
+
+      // Filter the employees from cached data
+      const filteredEmployees = window.employeesData.filter(employee => {
+        console.log("Employee Name: " + employee.name);  // Log each employee's name
+        return employee.name === selectedEmployee;
+      });
+
+      // Check if filtered employees exist
+      if (filteredEmployees.length > 0) {
+        // Loop through the filtered data and append new rows
+        $.each(filteredEmployees, function (index, employee) {
+          $('#employeeTableBody').append(
+                  '<tr>' +
+                  '<td>' + employee.name + '</td>' +
+                  '<td>' + employee.lastActivity + '</td>' +
+                  '<td>' + employee.courseName + '</td>' +
+                  '<td>' + employee.minutesSpent + '</td>' +
+                  '</tr>'
+          );
+        });
+      } else {
+        // Handle case where no employees are found
+        $('#employeeTableBody').append(
+                '<tr><td colspan="4">No data available for selected employee.</td></tr>'
+        );
+      }
+    });
+  });
+</script>
+
+
 
 </body>
 </html>
