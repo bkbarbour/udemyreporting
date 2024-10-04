@@ -39,18 +39,24 @@ public class EmployeeService {
                     JsonNode employeeCourseAccessedNode = employeeNode.get("course_last_accessed_date");
                     JsonNode employeeMinutesSpent = employeeNode.get("num_video_consumed_minutes");
 
-                    if (!employeeCourseAccessedNode.isMissingNode() && !employeeCourseAccessedNode.isNull()){
+                    if (!employeeCourseAccessedNode.isMissingNode() && !employeeCourseAccessedNode.isNull()) {
                         String courseLastAccessed = employeeCourseAccessedNode.asText();
 
                         DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
                         Instant instant = Instant.parse(courseLastAccessed);
                         LocalDateTime courseAccessedDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+
+                        // Format the date for display
                         DateTimeFormatter readableFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
                         String courseLastAccessedDateFormatted = courseAccessedDateTime.format(readableFormatter);
-                        employee.setLastActivity(courseLastAccessedDateFormatted);
+
+                        employee.setLastActivity(courseLastAccessedDateFormatted);  // Set formatted date string
+                        employee.setLastActivityDateTime(courseAccessedDateTime);   // Set sortable LocalDateTime
                     } else {
                         employee.setLastActivity(null);
+                        employee.setLastActivityDateTime(null);
                     }
+
 
                     String firstName = employeeFirstNameNode.asText();
                     String firstNameFinal = firstName.replaceAll("\"", "");
@@ -103,6 +109,25 @@ public class EmployeeService {
                 nextUrl = null;  // Stop on error
             }
         }
+
+        // Sort employees by lastActivityDateTime (most recent first)
+        allEmployees.sort((e1, e2) -> {
+            LocalDateTime date1 = e1.getLastActivityDateTime();
+            LocalDateTime date2 = e2.getLastActivityDateTime();
+
+            if (date1 == null && date2 == null) {
+                return 0;  // Both are null, they are equal
+            }
+            if (date1 == null) {
+                return 1;  // Null comes after non-null
+            }
+            if (date2 == null) {
+                return -1; // Non-null comes before null
+            }
+            return date2.compareTo(date1);  // Compare normally (most recent first)
+        });
+
+
         return allEmployees;
     }
 

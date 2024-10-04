@@ -1,9 +1,21 @@
 package com.bbarb75.udemyreporting.Entities;
 
+import java.time.LocalDateTime;
+
 public class Employee {
     String name;
     String lastActivity;
     String courseName;
+
+    public LocalDateTime getLastActivityDateTime() {
+        return lastActivityDateTime;
+    }
+
+    public void setLastActivityDateTime(LocalDateTime lastActivityDateTime) {
+        this.lastActivityDateTime = lastActivityDateTime;
+    }
+
+    LocalDateTime lastActivityDateTime;
 
     public String getMinutesSpent() {
         return minutesSpent;
