@@ -5,12 +5,18 @@
   <meta charset="UTF-8">
   <title>Home</title>
   <link th:href="@{/css/main.css}" rel="stylesheet"/>
-
-
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 </head>
 
 <body>
+<div class="elementor-element elementor-element-2c7f75f e-con-full e-flex e-con e-child" data-id="2c7f75f" data-element_type="container">
+  <div class="elementor-element elementor-element-14a4e97 elementor-widget elementor-widget-image" data-id="14a4e97" data-element_type="widget" data-widget_type="image.default">
+    <div class="elementor-widget-container">
+
+        <img fetchpriority="high" width="687" height="82" src="https://comtechnc.com/wp-content/uploads/2023/05/ComTech-Logo-White.svg" class="attachment-large size-large wp-image-15" alt="">
+    </div>
+  </div>
+</div>
 <h1 class="page-header">Employee Udemy Data</h1>
 <hr>
 <label class="choose-employee" for="employeeName">Choose an employee:</label>
@@ -44,42 +50,39 @@
   </table>
 </div>
 
-<script>
-  // This initializes the employeesData variable with the employee data from the server
-  window.employeesData = [[${employees}]]; // Ensure this outputs valid JSON
-  console.log("Employees Data:", window.employeesData); //Log the data
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  // Initialize employeesData as a JSON object with Thymeleaf
+  window.employeesData = [[${employees}]];
+  /*]]>*/
+</script>
 
+<script>
   $(document).ready(function () {
     $('#employeeNameForm').on('submit', function (e) {
-      e.preventDefault();  // Prevent the form from submitting in the traditional way
+      e.preventDefault();  // Prevents form submission
 
-      var selectedEmployee = $('#employeeName').val();
-      console.log("Selected Employee: " + selectedEmployee);  // Debugging
+      const selectedEmployee = $('#employeeName').val();
 
       // Clear the table body
       $('#employeeTableBody').empty();
 
-      // Filter the employees from cached data
-      const filteredEmployees = window.employeesData.filter(employee => {
-        console.log("Employee Name: " + employee.name);  // Log each employee's name
-        return employee.name === selectedEmployee;
-      });
+      // Filter employees by the selected name from employeesData
+      const filteredEmployees = window.employeesData.filter(employee => employee.name === selectedEmployee);
 
-      // Check if filtered employees exist
+      // Display filtered results or message if no data found
       if (filteredEmployees.length > 0) {
-        // Loop through the filtered data and append new rows
         $.each(filteredEmployees, function (index, employee) {
           $('#employeeTableBody').append(
-                  '<tr>' +
-                  '<td>' + employee.name + '</td>' +
-                  '<td>' + employee.lastActivity + '</td>' +
-                  '<td>' + employee.courseName + '</td>' +
-                  '<td>' + employee.minutesSpent + '</td>' +
-                  '</tr>'
+                  `<tr>
+              <td>${employee.name}</td>
+              <td>${employee.lastActivity}</td>
+              <td>${employee.courseName}</td>
+              <td>${employee.minutesSpent}</td>
+            </tr>`
           );
         });
       } else {
-        // Handle case where no employees are found
         $('#employeeTableBody').append(
                 '<tr><td colspan="4">No data available for selected employee.</td></tr>'
         );
@@ -87,8 +90,6 @@
     });
   });
 </script>
-
-
 
 </body>
 </html>
